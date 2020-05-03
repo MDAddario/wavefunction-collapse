@@ -1,20 +1,20 @@
 public class Rule {
 
-    private char firstType;
-    private char secondType;
+    private Tile firstTile;
+    private Tile secondTile;
     private char relationship;
 
-    public Rule(char firstType, char secondType, char relationship) {
-        this.firstType    = firstType;
-        this.secondType   = secondType;
+    public Rule(Tile firstTile, Tile secondTile, char relationship) {
+        this.firstTile    = firstTile;
+        this.secondTile   = secondTile;
         this.relationship = relationship;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Rule)
-            return this.firstType     == ((Rule)obj).firstType &&
-                    this.secondType   == ((Rule)obj).secondType &&
+            return this.firstTile.equals(((Rule)obj).firstTile) &&
+                    this.secondTile.equals(((Rule)obj).secondTile) &&
                     this.relationship == ((Rule)obj).relationship;
         return false;
     }
@@ -23,15 +23,15 @@ public class Rule {
     public String toString() {
         String relation;
         if (this.relationship == 'U')
-            relation = " is above ";
+            relation = "is above ";
         else if (this.relationship == 'D')
-            relation = " is below ";
+            relation = "is below ";
         else if (this.relationship == 'L')
-            relation = " left of ";
+            relation = "left of ";
         else if (this.relationship == 'R')
-            relation = " right of ";
+            relation = "right of ";
         else
-            relation = " BROKEN ";
-        return this.firstType + relation + this.secondType;
+            relation = "BROKEN ";
+        return this.firstTile + relation + this.secondTile;
     }
 }

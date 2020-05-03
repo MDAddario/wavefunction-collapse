@@ -1,6 +1,6 @@
 public class ContractionException extends Exception {
 
-    public ContractionException(String message, Throwable cause) {
-        super(message, cause);
+    public ContractionException(String message) {
+        super(message);
     }
 }

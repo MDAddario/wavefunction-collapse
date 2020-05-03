@@ -2,23 +2,21 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class State {
-    /*
-    // Fields
-    private ArrayList<Character> tiles;
-    private ArrayList<Character> originalTiles;
-    private ArrayList<Double> weights;
-    private double entropy;
 
-    // getter
-    public double getEntropy() {return this.entropy; }
+    // Fields
+    private ArrayList<Tile> tiles;
+    private double          entropy;
+    private Random          random;
+
+    // Getter
+    public double getEntropy() { return this.entropy; }
 
     // Constructor
-    public State(ArrayList<Character> tiles, ArrayList<Double> weights) {
+    public State(ArrayList<Tile> tiles, Random random) {
 
         // Store attributes
-        this.tiles = new ArrayList<>(tiles);
-        this.originalTiles = tiles;
-        this.weights = weights;
+        this.tiles  = new ArrayList<>(tiles);
+        this.random = random;
 
         // Compute entropy
         this.computeEntropy();
@@ -26,34 +24,63 @@ public class State {
 
     // Calculate the entropy
     private void computeEntropy() {
-        this.entropy = 0.0;
+
+        // shannon_entropy_for_square = log(sum(weight)) - (sum(weight * log(weight)) / sum(weight))
+        double sumA = 0.0;
+        double sumB = 0.0;
+
+        for (Tile tile : this.tiles) {
+            double weight = tile.getWeight();
+            sumA += weight;
+            sumB += weight * Math.log(weight);
+        }
+
+        this.entropy = Math.log(sumA) - sumB / sumA;
     }
 
-    // Remove a state from the list
-    public void removeTile(Character tile) {
-        if (this.tiles.contains((Object)tile)) {
-            this.tiles.remove((Object) tile);
+    // Remove a tile from the state
+    public void removeTile(Tile tile) throws ContractionException {
+
+        // Compute entropy if tile removed
+        if (this.tiles.contains(tile)) {
+            this.tiles.remove(tile);
+
+            // Check for a contradiction
+            if (this.tiles.size() == 0)
+                throw new ContractionException("Contradiction achieved.\n");
+
             this.computeEntropy();
         }
-    }
-
-    // Collapse to single state
-    public void collapseTo(Character tile) {
-
-        // Ensure state is available
-        if (!this.tiles.contains((Object)tile))
-            throw new RuntimeException("State does not contain the given tile.\n");
-
-        // Create new array list with only that tile
-        this.tiles = new ArrayList<>();
-        this.tiles.add(tile);
     }
 
     // Collapse to state based off weights
     public void collapse() {
 
-        Random rand = new Random();
+        // Determine the number of all the weights (between 0 and 1)
+        double weightSum = 0.0;
+        for (Tile tile : this.tiles)
+            weightSum += tile.getWeight();
 
+        // Generate a random number between zero and weightSum
+        double sampled = this.random.nextDouble() * weightSum;
+
+        // Determine what bracket the sampled number falls into
+        for (Tile tile : this.tiles) {
+
+            // Not it
+            if (sampled > tile.getWeight()) {
+                sampled -= tile.getWeight();
+
+            // Found it
+            } else {
+
+                // Create new array list with only that tile
+                this.tiles = new ArrayList<>();
+                this.tiles.add(tile);
+                return;
+            }
+        }
+        throw new RuntimeException("Collapse() method unable to select a state.\n");
     }
 
     // Check if state is collapsed
@@ -65,6 +92,4 @@ public class State {
     public String toString() {
         return this.tiles.toString();
     }
-
-    */
 }

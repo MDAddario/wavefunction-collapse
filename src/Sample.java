@@ -69,25 +69,25 @@ public class Sample {
 
                 // Check downward rule
                 if (i != 0) {
-                    Rule rule = new Rule(board[i][j], board[i-1][j], 'D');
+                    Rule rule = new Rule(new Tile(board[i][j]), new Tile(board[i-1][j]), 'D');
                     if (!rules.contains(rule))
                         rules.add(rule);
                 }
                 // Check upward rule
                 if (i != height-1) {
-                    Rule rule = new Rule(board[i][j], board[i+1][j], 'U');
+                    Rule rule = new Rule(new Tile(board[i][j]), new Tile(board[i+1][j]), 'U');
                     if (!rules.contains(rule))
                         rules.add(rule);
                 }
                 // Check rightward rule
                 if (j != 0) {
-                    Rule rule = new Rule(board[i][j], board[i][j-1], 'R');
+                    Rule rule = new Rule(new Tile(board[i][j]), new Tile(board[i][j-1]), 'R');
                     if (!rules.contains(rule))
                         rules.add(rule);
                 }
                 // Check leftward rule
                 if (j != width-1) {
-                    Rule rule = new Rule(board[i][j], board[i][j+1], 'L');
+                    Rule rule = new Rule(new Tile(board[i][j]), new Tile(board[i][j+1]), 'L');
                     if (!rules.contains(rule))
                         rules.add(rule);
                 }
@@ -96,14 +96,13 @@ public class Sample {
         // Determine anti rules
         this.antiRules = new ArrayList<>();
         char[] relationships = {'U', 'D', 'L', 'R'};
-        ArrayList<Character> types = Tile.getTypes(this.tiles);
 
-        for (char firstType : types)
-            for (char secondType : types)
+        for (Tile firstTile : this.tiles)
+            for (Tile secondTile : this.tiles)
                 for (char relationship : relationships) {
 
                     // Construct rule
-                    Rule rule = new Rule(firstType, secondType, relationship);
+                    Rule rule = new Rule(firstTile, secondTile, relationship);
 
                     // Add it to anti rules if they don't exist
                     if (!rules.contains(rule))
