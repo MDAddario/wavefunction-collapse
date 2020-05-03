@@ -3,13 +3,11 @@ import java.util.ArrayList;
 public class Sample {
 
     // Relevant information to be passed to wavefunction
-    private ArrayList<Character> tiles;
-    private ArrayList<Double> weights;
+    private ArrayList<Tile> tiles;
     private ArrayList<Rule> antiRules;
 
     // Getters
-    public ArrayList<Character> getTiles() { return this.tiles; }
-    public ArrayList<Double> getWeights() { return this.weights; }
+    public ArrayList<Tile> getTiles()     { return this.tiles; }
     public ArrayList<Rule> getAntiRules() { return this.antiRules; }
 
     // Default board
@@ -25,7 +23,7 @@ public class Sample {
         // Create the default sample
         Sample sample = new Sample();
 
-        // Print the sample
+        // Print the sample information
         System.out.println(sample);
     }
 

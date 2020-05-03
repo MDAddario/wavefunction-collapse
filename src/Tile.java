@@ -4,23 +4,22 @@ public class Tile {
 
     // Attributes
     private char   type;
+    private int    count;
     private double weight;
 
-    // Getters and setters
-    public char   getType  ()              { return this.type; }
-    public double getWeight()              { return this.weight; }
-    public void   setType  (char type)     { this.type = type; }
-    public void   setWeight(double weight) { this.weight = weight; }
+    // Getter
+    public double getWeight() { return this.weight; }
 
     // Constructors
-    public Tile(char type, double weight) {
+    public Tile(char type, int count, double weight) {
         this.type   = type;
+        this.count  = count;
         this.weight = weight;
     }
 
     // Default constructor
     public Tile(char type) {
-        this(type, 0.0);
+        this(type, 1, 0.0);
     }
 
     @Override
@@ -35,10 +34,21 @@ public class Tile {
         return type + " ";
     }
 
-    // Compute the weights for a set of tiles and counts
-    public static void computeWeights(ArrayList<Tile> tiles, ArrayList<Integer> counts, int numTiles) {
+    // Increment the counter
+    public void incrementCount() {
+        this.count++;
+    }
 
-        for (int i = 0; i < tiles.size(); i++)
-            tiles.get(i).weight = ((double)counts.get(i)) / numTiles;
+    // Compute the weights for a set of tiles and counts
+    public static void computeWeights(ArrayList<Tile> tiles) {
+
+        // Determine the total number of tiles
+        int sum = 0;
+        for (Tile tile : tiles)
+            sum += tile.count;
+
+        // Compute the weights
+        for (Tile tile : tiles)
+            tile.weight = ((double)tile.count) / sum;
     }
 }
