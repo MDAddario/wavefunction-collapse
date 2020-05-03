@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class State {
 
@@ -30,8 +31,10 @@ public class State {
 
     // Remove a state from the list
     public void removeTile(Character tile) {
-        this.tiles.remove((Object)tile);
-        this.computeEntropy();
+        if (this.tiles.contains((Object)tile)) {
+            this.tiles.remove((Object) tile);
+            this.computeEntropy();
+        }
     }
 
     // Collapse to single state
@@ -44,6 +47,13 @@ public class State {
         // Create new array list with only that tile
         this.tiles = new ArrayList<>();
         this.tiles.add(tile);
+    }
+
+    // Collapse to state based off weights
+    public void collapse() {
+
+        Random rand = new Random();
+
     }
 
     // Check if state is collapsed

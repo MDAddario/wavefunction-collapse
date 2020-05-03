@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Wavefunction {
 
@@ -75,5 +76,42 @@ public class Wavefunction {
         for (int i = 0; i < height; i++)
             for (int j = 0; j < width; j++)
                 this.states[i][j] = new State(this.tiles, this.weights);
+    }
+
+    // Collapse a superposition of tiles to a given state
+    private void collapseSuperposition() {
+
+        // Create the rng
+        Random rand = new Random();
+
+        // Determine the smallest entropy over the board
+        double min_entropy = 99999999.0;
+        double epsilon = 0.000001;
+
+        for (State[] row : this.states)
+            for (State state : row)
+                if (state.getEntropy() < min_entropy)
+                    min_entropy = state.getEntropy();
+
+        // Determine all states with this entropy
+        ArrayList<Integer> heights = new ArrayList<>();
+        ArrayList<Integer> widths = new ArrayList<>();
+
+        for (int i = 0; i < height; i++)
+            for (int j = 0; j < width; j++)
+                if (Math.abs(this.states[i][j].getEntropy() - min_entropy) < epsilon) {
+                    heights.add(i);
+                    widths.add(j);
+                }
+
+        // Pick a random state from the list
+        int index = rand.nextInt(heights.size());
+        int i = heights.get(index);
+        int j = heights.get(index);
+
+        // Collapse the state
+        this.states[i][j].collapse();
+
+        //
     }
 }
