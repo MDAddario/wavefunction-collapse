@@ -15,10 +15,36 @@ public class Wavefunction {
     private ArrayList<Rule> antiRules;
 
     // Keep track of the superposed states
-    private ArrayList<ArrayList<ArrayList<Character>>> states;
+    private State[][] states;
+
+    public State[][] getStates() {return this.states; }
 
     // Main
     public static void main(String[] args) {
+
+        // Create wavefunction from default sample
+        Wavefunction phi = new Wavefunction(new Sample(), 2, 2);
+
+        // Create a fresh superposition
+        phi.createFreshSuperposition();
+
+        // Print all states
+        for (int i = 0; i < 2; i++)
+            for (int j = 0; j < 2; j++) {
+                System.out.println("Tile: " + i + " " + j);
+                System.out.println(phi.getStates()[i][j]);
+            }
+
+        // Collapse state
+        phi.getStates()[0][0].removeTile('L');
+        phi.getStates()[1][1].collapseTo('L');
+
+        // Print all states
+        for (int i = 0; i < 2; i++)
+            for (int j = 0; j < 2; j++) {
+                System.out.println("Tile: " + i + " " + j);
+                System.out.println(phi.getStates()[i][j]);
+            }
 
     }
 
@@ -45,12 +71,9 @@ public class Wavefunction {
         this.generationCount++;
 
         // Create states array
-        this.states = new ArrayList<>();
-        for (int i = 0; i < height; i++) {
-
-            this.states.add(new ArrayList<>());
+        this.states = new State[this.height][this.width];
+        for (int i = 0; i < height; i++)
             for (int j = 0; j < width; j++)
-                this.states.get(i).add(new ArrayList<>(this.tiles));
-        }
+                this.states[i][j] = new State(this.tiles, this.weights);
     }
 }
