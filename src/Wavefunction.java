@@ -15,7 +15,12 @@ public class Wavefunction {
     private ArrayList<Rule> antiRules;
 
     // Keep track of the superposed states
-    private ArrayList<Character>[][] states;
+    private ArrayList<ArrayList<ArrayList<Character>>> states;
+
+    // Main
+    public static void main(String[] args) {
+
+    }
 
     // Constructor
     public Wavefunction(Sample sample, int height, int width) {
@@ -33,18 +38,19 @@ public class Wavefunction {
         this.generationCount = 0;
     }
 
+    // Create a fresh superposition of all states at all tiles
     private void createFreshSuperposition() {
 
         // Increment the generation number
         this.generationCount++;
 
         // Create states array
-        this.states = new ArrayList<Character>[this.height][this.width];
+        this.states = new ArrayList<>();
+        for (int i = 0; i < height; i++) {
 
-        // Begin with all states available
-        for (int i = 0; i < height; i++)
+            this.states.add(new ArrayList<>());
             for (int j = 0; j < width; j++)
-                this.states[i][j] = this.tiles.clone();
+                this.states.get(i).add(new ArrayList<>(this.tiles));
+        }
     }
-
 }

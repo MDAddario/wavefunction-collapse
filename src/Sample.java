@@ -12,21 +12,26 @@ public class Sample {
     public ArrayList<Double> getWeights() { return this.weights; }
     public ArrayList<Rule> getAntiRules() { return this.antiRules; }
 
+    // Default board
+    private static char[][] DEFAULT_BOARD = {{'L', 'L', 'L', 'L', 'L', 'L'},
+                                             {'L', 'L', 'L', 'C', 'C', 'L'},
+                                             {'L', 'L', 'C', 'S', 'S', 'C'},
+                                             {'L', 'C', 'S', 'S', 'S', 'S'},
+                                             {'C', 'S', 'S', 'S', 'S', 'S'}};
+
     // The main attraction
     public static void main(String[] args) {
 
-        // Create new board
-        char[][] board = {{'L', 'L', 'L', 'L', 'L', 'L'},
-                          {'L', 'L', 'L', 'C', 'C', 'L'},
-                          {'L', 'L', 'C', 'S', 'S', 'C'},
-                          {'L', 'C', 'S', 'S', 'S', 'S'},
-                          {'C', 'S', 'S', 'S', 'S', 'S'}};
-
-        // Create the sample
-        Sample sample = new Sample(board);
+        // Create the default sample
+        Sample sample = new Sample();
 
         // Print the sample
         System.out.println(sample);
+    }
+
+    // Default constructor
+    public Sample() {
+        this(DEFAULT_BOARD);
     }
 
     // Constructor
