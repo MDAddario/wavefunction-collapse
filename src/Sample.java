@@ -37,37 +37,33 @@ public class Sample {
 
         // Determine tile types and count the occurrences
         this.tiles = new ArrayList<>();
-        ArrayList<Integer> counts = new ArrayList<>();
 
         // Parse the input board
         for (char[] row : board)
-            for (char tile : row) {
+            for (char type : row) {
+
+                // Create tile object
+                Tile tile = new Tile(type);
 
                 // If tile does not exist
                 if (!this.tiles.contains(tile)) {
-
                     this.tiles.add(tile);
-                    counts.add(1);
 
-                } else { // If tile does already exist
-
+                // If tile does already exist
+                } else {
                     int index = this.tiles.indexOf(tile);
-                    int count = counts.get(index);
-                    counts.set(index, count + 1);
+                    this.tiles.get(index).incrementCount();
                 }
             }
 
         // Compute the weights
-        this.weights = new ArrayList<>();
-        int height = board.length;
-        int width = board[0].length;
-        int divisor = height * width;
-
-        for (int count : counts)
-            this.weights.add(((double)count) / divisor);
+        Tile.computeWeights(this.tiles);
 
         // Determine the rules
         ArrayList<Rule> rules = new ArrayList<>();
+        int height = board.length;
+        int width  = board[0].length;
+
         for (int i = 0; i < height; i++)
             for (int j = 0; j < width; j++) {
 
@@ -100,12 +96,14 @@ public class Sample {
         // Determine anti rules
         this.antiRules = new ArrayList<>();
         char[] relationships = {'U', 'D', 'L', 'R'};
-        for (char firstTile : this.tiles)
-            for (char secondTile : this.tiles)
+        ArrayList<Character> types = Tile.getTypes(this.tiles);
+
+        for (char firstType : types)
+            for (char secondType : types)
                 for (char relationship : relationships) {
 
                     // Construct rule
-                    Rule rule = new Rule(firstTile, secondTile, relationship);
+                    Rule rule = new Rule(firstType, secondType, relationship);
 
                     // Add it to anti rules if they don't exist
                     if (!rules.contains(rule))
@@ -116,8 +114,8 @@ public class Sample {
     @Override
     public String toString() {
 
-        String lineOne = "Tile list: \n\t" + this.tiles.toString() + "\n";
-        String lineTwo = "Weight list: \n\t" + this.weights.toString() + "\n";
+        String lineOne = "Type list: \n\t"   + Tile.getTypes(this.tiles)   + "\n";
+        String lineTwo = "Weight list: \n\t" + Tile.getWeights(this.tiles) + "\n";
         StringBuilder lineThree = new StringBuilder("Anti-rule list: " + "\n");
 
         for (Rule rule : this.antiRules) {

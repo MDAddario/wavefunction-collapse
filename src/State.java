@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class State {
-
+    /*
     // Fields
     private ArrayList<Character> tiles;
     private ArrayList<Character> originalTiles;
@@ -65,4 +65,6 @@ public class State {
     public String toString() {
         return this.tiles.toString();
     }
+
+    */
 }

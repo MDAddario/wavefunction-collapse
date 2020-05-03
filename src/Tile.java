@@ -51,4 +51,30 @@ public class Tile {
         for (Tile tile : tiles)
             tile.weight = ((double)tile.count) / sum;
     }
+
+    // Construct an array list of the available types
+    public static ArrayList<Character> getTypes(ArrayList<Tile> tiles) {
+
+        // Create the array list
+        ArrayList<Character> list = new ArrayList<>();
+
+        // Populate
+        for (Tile tile : tiles)
+            list.add(tile.type);
+
+        return list;
+    }
+
+    // Construct an array list of the weights
+    public static ArrayList<Double> getWeights(ArrayList<Tile> tiles) {
+
+        // Create the array list
+        ArrayList<Double> list = new ArrayList<>();
+
+        // Populate
+        for (Tile tile : tiles)
+            list.add(tile.weight);
+
+        return list;
+    }
 }

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Wavefunction {
-
+    /*
     // Number of times generation was attempted
     private int generationCount;
 
@@ -114,4 +114,5 @@ public class Wavefunction {
 
         //
     }
+    */
 }
