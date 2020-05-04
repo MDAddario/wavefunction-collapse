@@ -49,6 +49,9 @@ class ImageProcessing {
     private static final String DEFAULT_OUTPUT = "assets/flower_output.png";
     private static final String DEFAULT_FORMAT = "png";
 
+    // Getter
+    Type[][] getTypes() { return this.types; }
+
     // Constructor
     ImageProcessing(String input) throws Exception {
 

@@ -10,6 +10,7 @@ class Tile {
     private double weight;
 
     // Getters
+    Type   getType()   { return this.type; }
     double getWeight() { return this.weight; }
 
     // Constructors

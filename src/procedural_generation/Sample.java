@@ -7,13 +7,15 @@ public class Sample {
     // Relevant information to be passed to wavefunction
     private ArrayList<Tile> tiles;
     private ArrayList<Rule> antiRules;
+    private ImageProcessing imgProc;
 
-    // Save the board so we can look at it
-    private Type[][] board;
+    // Have a default input file
+    private static final String DEFAULT_INPUT = "assets/coast_sample.png";
 
     // Getters
     ArrayList<Tile> getTiles()     { return this.tiles; }
     ArrayList<Rule> getAntiRules() { return this.antiRules; }
+    ImageProcessing getImgProc()   { return this.imgProc; }
 
     // The main attraction
     public static void main(String[] args) {
@@ -30,14 +32,19 @@ public class Sample {
 
     // Default constructor
     public Sample() {
-        this(DEFAULT_BOARD, 1.0);
+        this(DEFAULT_INPUT, 1.0);
     }
 
     // Constructor
-    public Sample(String filename, double radius) {
+    public Sample(String input, double radius) {
 
         // Extract the type board from file
-        this.extractTypes(filename);
+        try {
+            this.imgProc = new ImageProcessing(input);
+
+        } catch (Exception e) {
+            System.out.println("Image could not be loaded.");
+        }
 
         // Count the tiles
         this.countTiles();
@@ -46,17 +53,13 @@ public class Sample {
         this.determineRules(radius);
     }
 
-    private void extractTypes(String filename) {
-        this.board = null;
-    }
-
     private void countTiles() {
 
         // Determine tile types and count the occurrences
         this.tiles = new ArrayList<>();
 
         // Parse the input board
-        for (Type[] row : this.board)
+        for (Type[] row : this.imgProc.getTypes())
             for (Type type : row) {
 
                 // Create tile object
@@ -82,8 +85,8 @@ public class Sample {
         // Determine the rules
         ArrayList<Direction> allDirs = Direction.getAllDirections(radius);
         ArrayList<Rule> rules = new ArrayList<>();
-        int height = this.board.length;
-        int width  = this.board[0].length;
+        int height = this.imgProc.getTypes().length;
+        int width  = this.imgProc.getTypes()[0].length;
 
         // Span all board tiles
         for (int i = 0; i < height; i++)
@@ -92,7 +95,7 @@ public class Sample {
                 // Span all possible rules
                 for (Direction dir : allDirs)
                     if (dir.isPossible(i, j, height, width)) {
-                        Rule rule = new Rule(this.board, i, j, dir);
+                        Rule rule = new Rule(this.imgProc.getTypes(), i, j, dir);
                         if (!rules.contains(rule))
                             rules.add(rule);
                     }
@@ -136,7 +139,7 @@ public class Sample {
     // Visualize the board
     public void visualize() {
         System.out.println("Visualizing sample:");
-        for (Type[] row : this.board) {
+        for (Type[] row : this.imgProc.getTypes()) {
             for (Type type : row)
                 System.out.print(type + " ");
             System.out.println();

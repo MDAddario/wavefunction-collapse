@@ -18,6 +18,10 @@ public class Wavefunction {
     // Keep track of the superimposed states of tiles
     private State[][] states;
 
+    // Default arguments
+    private static final String DEFAULT_OUTPUT = "assets/coast_output.png";
+    private static final String DEFAULT_FORMAT = "png";
+
     // Main
     public static void main(String[] args) {
 
@@ -26,16 +30,17 @@ public class Wavefunction {
         int width = 10;
         Wavefunction phi = new Wavefunction(new Sample(), height, width);
 
-        // Run the game in a loop
+        // Visualize the sample
         phi.visualizeSample();
-        for (int i = 0; i < 5; i++) {
 
-            // Run the simulations
-            phi.quantumLoop();
+        // Run the simulations
+        phi.quantumLoop();
 
-            // Print sample and collapsed version
-            phi.visualizePhi();
-        }
+        // Print sample and collapsed version
+        phi.visualizePhi();
+
+        // Save collapsed version to file
+        phi.saveImage();
     }
 
     // Constructor
@@ -141,6 +146,35 @@ public class Wavefunction {
                 this.freshSuperposition();
             }
         }
+    }
+
+    // Extract the types
+    private Type[][] extractTypes() {
+
+        // Allocate output
+        Type[][] types = new Type[this.states.length][this.states[0].length];
+
+        // Snatch the types
+        for (int i = 0; i < this.states.length; i++)
+            for (int j = 0; j < this.states[0].length; j++)
+                types[i][j] = this.states[i][j].getTileZero().getType();
+
+        return types;
+    }
+
+    // Save collapsed state to an image
+    public void saveImage(String output, String format) {
+
+        try {
+            this.sample.getImgProc().constructImageFromTypes(this.extractTypes(), output, format);
+
+        } catch (Exception ex) {
+            System.out.println("Could not save image.");
+        }
+    }
+
+    public void saveImage() {
+        this.saveImage(DEFAULT_OUTPUT, DEFAULT_FORMAT);
     }
 
     public void visualizeSample() {
