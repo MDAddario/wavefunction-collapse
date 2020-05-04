@@ -2,7 +2,7 @@ package procedural_generation;
 
 import java.util.ArrayList;
 
-public class Sample {
+class Sample {
 
     // Relevant information to be passed to wavefunction
     private ArrayList<Tile> tiles;
@@ -31,12 +31,12 @@ public class Sample {
     }
 
     // Default constructor
-    public Sample() {
+    Sample() {
         this(DEFAULT_INPUT, 1.0);
     }
 
     // Constructor
-    public Sample(String input, double radius) {
+    Sample(String input, double radius) {
 
         // Extract the type board from file
         try {
@@ -137,7 +137,7 @@ public class Sample {
     }
 
     // Visualize the board
-    public void visualize() {
+    void visualize() {
         System.out.println("Visualizing sample:");
         for (Type[] row : this.imgProc.getTypes()) {
             for (Type type : row)

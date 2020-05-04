@@ -1,8 +1,8 @@
 package procedural_generation;
 
-public class CollapsedStateException extends Exception {
+class CollapsedStateException extends Exception {
 
-    public CollapsedStateException(String message) {
+    CollapsedStateException(String message) {
         super(message);
     }
 }

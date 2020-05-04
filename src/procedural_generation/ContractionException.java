@@ -1,8 +1,8 @@
 package procedural_generation;
 
-public class ContractionException extends Exception {
+class ContractionException extends Exception {
 
-    public ContractionException(String message) {
+    ContractionException(String message) {
         super(message);
     }
 }

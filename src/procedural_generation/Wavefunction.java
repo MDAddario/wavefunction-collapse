@@ -3,7 +3,7 @@ package procedural_generation;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Wavefunction {
+class Wavefunction {
 
     // Save sample board
     private Sample sample;
@@ -44,7 +44,7 @@ public class Wavefunction {
     }
 
     // Constructor
-    public Wavefunction(Sample sample, int height, int width) {
+    Wavefunction(Sample sample, int height, int width) {
 
         // Save the sample
         this.sample = sample;
@@ -119,7 +119,7 @@ public class Wavefunction {
     }
 
     // Performs the wavefunction collapse procedure until completion
-    public void quantumLoop() {
+    void quantumLoop() {
 
         // Create a fresh superposition
         this.freshSuperposition();
@@ -163,7 +163,7 @@ public class Wavefunction {
     }
 
     // Save collapsed state to an image
-    public void saveImage(String output, String format) {
+    void saveImage(String output, String format) {
 
         try {
             this.sample.getImgProc().constructImageFromTypes(this.extractTypes(), output, format);
@@ -173,15 +173,15 @@ public class Wavefunction {
         }
     }
 
-    public void saveImage() {
+    void saveImage() {
         this.saveImage(DEFAULT_OUTPUT, DEFAULT_FORMAT);
     }
 
-    public void visualizeSample() {
+    void visualizeSample() {
         this.sample.visualize();
     }
 
-    public void visualizePhi() {
+    void visualizePhi() {
 
         System.out.println("Visualizing phi:");
         for (int i = 0; i < this.height; i++) {
