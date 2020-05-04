@@ -1,19 +1,13 @@
-import java.util.ArrayList;
-
 public class Rule {
 
-    private Tile firstTile;
-    private Tile secondTile;
-    private char relationship;
+    private Tile      firstTile;
+    private Tile      secondTile;
+    private Direction direction;
 
-    // Getter
-    public Tile getFirstTile()  { return this.firstTile; }
-    public Tile getSecondTile() { return this.secondTile; }
-
-    public Rule(Tile firstTile, Tile secondTile, char relationship) {
-        this.firstTile    = firstTile;
-        this.secondTile   = secondTile;
-        this.relationship = relationship;
+    public Rule(Tile firstTile, Tile secondTile, Direction direction) {
+        this.firstTile  = firstTile;
+        this.secondTile = secondTile;
+        this.direction  = direction;
     }
 
     @Override
@@ -21,67 +15,12 @@ public class Rule {
         if (obj instanceof Rule)
             return this.firstTile.equals(((Rule)obj).firstTile) &&
                     this.secondTile.equals(((Rule)obj).secondTile) &&
-                    this.relationship == ((Rule)obj).relationship;
+                    this.direction.equals(((Rule)obj).direction);
         return false;
     }
 
     @Override
     public String toString() {
-        String relation;
-        if (this.relationship == 'U')
-            relation = "is above ";
-        else if (this.relationship == 'D')
-            relation = "is below ";
-        else if (this.relationship == 'L')
-            relation = "left of ";
-        else if (this.relationship == 'R')
-            relation = "right of ";
-        else
-            relation = "BROKEN ";
-        return this.firstTile + relation + this.secondTile;
-    }
-
-    public static ArrayList<Rule> upRules(ArrayList<Rule> rules) {
-
-        ArrayList<Rule> reducedRules = new ArrayList<>();
-
-        for (Rule rule : rules)
-            if (rule.relationship == 'U')
-                reducedRules.add(rule);
-
-        return reducedRules;
-    }
-
-    public static ArrayList<Rule> downRules(ArrayList<Rule> rules) {
-
-        ArrayList<Rule> reducedRules = new ArrayList<>();
-
-        for (Rule rule : rules)
-            if (rule.relationship == 'D')
-                reducedRules.add(rule);
-
-        return reducedRules;
-    }
-
-    public static ArrayList<Rule> leftRules(ArrayList<Rule> rules) {
-
-        ArrayList<Rule> reducedRules = new ArrayList<>();
-
-        for (Rule rule : rules)
-            if (rule.relationship == 'L')
-                reducedRules.add(rule);
-
-        return reducedRules;
-    }
-
-    public static ArrayList<Rule> rightRules(ArrayList<Rule> rules) {
-
-        ArrayList<Rule> reducedRules = new ArrayList<>();
-
-        for (Rule rule : rules)
-            if (rule.relationship == 'R')
-                reducedRules.add(rule);
-
-        return reducedRules;
+        return this.firstTile.toString() + this.direction.toString() + this.secondTile.toString();
     }
 }

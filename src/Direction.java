@@ -17,6 +17,14 @@ public class Direction {
         return "(" + this.di + ", " + this.dj + ") ";
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Direction)
+            return this.di == ((Direction)obj).di &&
+                    this.dj == ((Direction)obj).dj;
+        return false;
+    }
+
     // Create all possible directions within a radius
     public static ArrayList<Direction> getAllDirections(double radius) {
 
