@@ -74,7 +74,7 @@ public class Wavefunction {
 
         for (State[] row : this.states)
             for (State state : row)
-                if (!state.isCollapsed() && state.getEntropy() < minEntropy)
+                if (state.isNotCollapsed() && state.getEntropy() < minEntropy)
                     minEntropy = state.getEntropy();
 
         // Determine all states with this entropy
@@ -82,7 +82,7 @@ public class Wavefunction {
 
         for (int i = 0; i < height; i++)
             for (int j = 0; j < width; j++)
-                if (!this.states[i][j].isCollapsed() &&
+                if (this.states[i][j].isNotCollapsed() &&
                         Math.abs(this.states[i][j].getEntropy() - minEntropy) < EPSILON)
                     pairs.add(new Pair(i, j));
 
@@ -99,7 +99,7 @@ public class Wavefunction {
     private void propagateAntiRules(Pair pair) throws ContractionException {
 
         // Check all rules
-        for (Rule antiRule : this.sample.getAntiRules())
+        for (Rule antiRule : Rule.scrambleRules(this.sample.getAntiRules(), this.random))
             if (antiRule.getDirection().isPossible(pair, this.height, this.width) &&
                     this.states[pair.i][pair.j].getTileZero().equals(antiRule.getFirstTile())) {
 

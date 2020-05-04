@@ -94,9 +94,9 @@ class State {
         throw new ArithmeticException("Collapse() method unable to select a state.\n");
     }
 
-    // Check if state is collapsed
-    boolean isCollapsed() {
-        return this.tiles.size() == 1;
+    // Check if state is still in a superposition
+    boolean isNotCollapsed() {
+        return this.tiles.size() != 1;
     }
 
     @Override

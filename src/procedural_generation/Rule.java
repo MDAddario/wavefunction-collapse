@@ -44,7 +44,7 @@ class Rule {
     }
 
     // Scramble the order of a list of rules
-    ArrayList<Rule> scrambleRules(ArrayList<Rule> rules, Random random) {
+    static ArrayList<Rule> scrambleRules(ArrayList<Rule> rules, Random random) {
 
         // Output list
         ArrayList<Rule> output = new ArrayList<>(rules.size());
