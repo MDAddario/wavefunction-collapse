@@ -1,3 +1,6 @@
+package procedural_generation;
+
+
 import java.util.ArrayList;
 import java.util.Random;
 

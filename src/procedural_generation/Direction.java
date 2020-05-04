@@ -1,3 +1,5 @@
+package procedural_generation;
+
 import java.util.ArrayList;
 
 public class Direction {

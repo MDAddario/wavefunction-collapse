@@ -1,3 +1,5 @@
+package procedural_generation;
+
 public class Pair {
 
     public int i;
