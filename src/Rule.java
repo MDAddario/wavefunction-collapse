@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Rule {
 
     private Tile firstTile;
@@ -33,5 +35,49 @@ public class Rule {
         else
             relation = "BROKEN ";
         return this.firstTile + relation + this.secondTile;
+    }
+
+    public static ArrayList<Rule> upRules(ArrayList<Rule> rules) {
+
+        ArrayList<Rule> reducedRules = new ArrayList<>();
+
+        for (Rule rule : rules)
+            if (rule.relationship == 'U')
+                reducedRules.add(rule);
+
+        return reducedRules;
+    }
+
+    public static ArrayList<Rule> downRules(ArrayList<Rule> rules) {
+
+        ArrayList<Rule> reducedRules = new ArrayList<>();
+
+        for (Rule rule : rules)
+            if (rule.relationship == 'D')
+                reducedRules.add(rule);
+
+        return reducedRules;
+    }
+
+    public static ArrayList<Rule> leftRules(ArrayList<Rule> rules) {
+
+        ArrayList<Rule> reducedRules = new ArrayList<>();
+
+        for (Rule rule : rules)
+            if (rule.relationship == 'L')
+                reducedRules.add(rule);
+
+        return reducedRules;
+    }
+
+    public static ArrayList<Rule> rightRules(ArrayList<Rule> rules) {
+
+        ArrayList<Rule> reducedRules = new ArrayList<>();
+
+        for (Rule rule : rules)
+            if (rule.relationship == 'R')
+                reducedRules.add(rule);
+
+        return reducedRules;
     }
 }
