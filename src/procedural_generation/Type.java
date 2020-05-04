@@ -25,4 +25,12 @@ class Type {
     public String toString() {
         return this.value + " ";
     }
+
+    static Type getFirstType() {
+        return new Type(0);
+    }
+
+    Type getNextType() {
+        return new Type(this.value + 1);
+    }
 }

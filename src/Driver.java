@@ -1,10 +1,8 @@
-import procedural_generation.Sample;
-import procedural_generation.Wavefunction;
-
 public class Driver {
 
     public static void main(String[] args) {
 
+        /*
         // Create a board
         char[][] board = {{'L', 'L', 'L', 'L', 'L', 'L'},
                           {'L', 'L', 'L', 'C', 'C', 'L'},
@@ -31,5 +29,6 @@ public class Driver {
 
         // Visualize collapsed version
         phi.visualizePhi();
+         */
     }
 }

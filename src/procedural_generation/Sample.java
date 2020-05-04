@@ -15,9 +15,6 @@ public class Sample {
     ArrayList<Tile> getTiles()     { return this.tiles; }
     ArrayList<Rule> getAntiRules() { return this.antiRules; }
 
-    // Default board
-    private static final String DEFAULT_BOARD = "assets/coast_sample.png";
-
     // The main attraction
     public static void main(String[] args) {
 
