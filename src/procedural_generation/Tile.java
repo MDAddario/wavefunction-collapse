@@ -5,7 +5,7 @@ import java.util.ArrayList;
 class Tile {
 
     // Attributes
-    private char   type;
+    private Type   type;
     private int    count;
     private double weight;
 
@@ -13,14 +13,14 @@ class Tile {
     double getWeight() { return this.weight; }
 
     // Constructors
-    Tile(char type, int count, double weight) {
+    Tile(Type type, int count, double weight) {
         this.type   = type;
         this.count  = count;
         this.weight = weight;
     }
 
     // Default constructor
-    Tile(char type) {
+    Tile(Type type) {
         this(type, 1, 0.0);
     }
 
@@ -64,10 +64,10 @@ class Tile {
     }
 
     // Construct an array list of the available types
-    static ArrayList<Character> getTypes(ArrayList<Tile> tiles) {
+    static ArrayList<Type> getTypes(ArrayList<Tile> tiles) {
 
         // Create the array list
-        ArrayList<Character> list = new ArrayList<>();
+        ArrayList<Type> list = new ArrayList<>();
 
         // Populate
         for (Tile tile : tiles)

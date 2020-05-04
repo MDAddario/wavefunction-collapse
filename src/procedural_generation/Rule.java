@@ -20,7 +20,7 @@ class Rule {
         this.direction  = direction;
     }
 
-    Rule(char[][] board, int i, int j, Direction dir) {
+    Rule(Type[][] board, int i, int j, Direction dir) {
         this(new Tile(board[i][j]), new Tile(board[i + dir.getDi()][j + dir.getDj()]), dir);
     }
 

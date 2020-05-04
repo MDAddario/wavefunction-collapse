@@ -9,18 +9,14 @@ public class Sample {
     private ArrayList<Rule> antiRules;
 
     // Save the board so we can look at it
-    private char[][] board;
+    private Type[][] board;
 
     // Getters
     ArrayList<Tile> getTiles()     { return this.tiles; }
     ArrayList<Rule> getAntiRules() { return this.antiRules; }
 
     // Default board
-    private static final char[][] DEFAULT_BOARD = {{'L', 'L', 'L', 'L', 'L', 'L'},
-                                                   {'L', 'L', 'L', 'C', 'C', 'L'},
-                                                   {'L', 'L', 'C', 'S', 'S', 'C'},
-                                                   {'L', 'C', 'S', 'S', 'S', 'S'},
-                                                   {'C', 'S', 'S', 'S', 'S', 'S'}};
+    private static final String DEFAULT_BOARD = "assets/coast_sample.png";
 
     // The main attraction
     public static void main(String[] args) {
@@ -41,16 +37,20 @@ public class Sample {
     }
 
     // Constructor
-    public Sample(char[][] board, double radius) {
+    public Sample(String filename, double radius) {
 
-        // Save the board
-        this.board = board;
+        // Extract the type board from file
+        this.extractTypes(filename);
 
         // Count the tiles
-        countTiles();
+        this.countTiles();
 
         // Determine the rules
-        determineRules(radius);
+        this.determineRules(radius);
+    }
+
+    private void extractTypes(String filename) {
+        this.board = null;
     }
 
     private void countTiles() {
@@ -59,8 +59,8 @@ public class Sample {
         this.tiles = new ArrayList<>();
 
         // Parse the input board
-        for (char[] row : this.board)
-            for (char type : row) {
+        for (Type[] row : this.board)
+            for (Type type : row) {
 
                 // Create tile object
                 Tile tile = new Tile(type);
@@ -101,7 +101,7 @@ public class Sample {
                     }
 
         // Determine anti rules
-        determineAntiRules(allDirs, rules);
+        this.determineAntiRules(allDirs, rules);
     }
 
     private void determineAntiRules(ArrayList<Direction> allDirs, ArrayList<Rule> rules) {
@@ -139,9 +139,9 @@ public class Sample {
     // Visualize the board
     public void visualize() {
         System.out.println("Visualizing sample:");
-        for (char[] row : this.board) {
-            for (char c : row)
-                System.out.print(c + " ");
+        for (Type[] row : this.board) {
+            for (Type type : row)
+                System.out.print(type + " ");
             System.out.println();
         }
     }
