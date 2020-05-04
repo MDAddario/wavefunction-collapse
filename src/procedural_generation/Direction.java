@@ -2,18 +2,18 @@ package procedural_generation;
 
 import java.util.ArrayList;
 
-public class Direction {
+class Direction {
 
     // Attributes
     private int di;
     private int dj;
 
     // Getters
-    public int getDi() { return this.di; }
-    public int getDj() { return this.dj; }
+    int getDi() { return this.di; }
+    int getDj() { return this.dj; }
 
     // Constructor
-    public Direction(int di, int dj) {
+    Direction(int di, int dj) {
         this.di = di;
         this.dj = dj;
     }
@@ -31,8 +31,13 @@ public class Direction {
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
     // Create all possible directions within a radius
-    public static ArrayList<Direction> getAllDirections(double radius) {
+    static ArrayList<Direction> getAllDirections(double radius) {
 
         // Stability
         double EPSILON = 0.0001;
@@ -55,12 +60,12 @@ public class Direction {
     }
 
     // Check if the direction is possible from the given coordinates
-    public boolean isPossible(int i, int j, int height, int width) {
+    boolean isPossible(int i, int j, int height, int width) {
         return 0 <= i + this.di && i + this.di < height &&
                 0 <= j + this.dj && j + this.dj < width;
     }
 
-    public boolean isPossible(Pair pair, int height, int width) {
+    boolean isPossible(Pair pair, int height, int width) {
         return isPossible(pair.i, pair.j, height, width);
     }
 

@@ -5,15 +5,15 @@ import java.util.ArrayList;
 public class Sample {
 
     // Relevant information to be passed to wavefunction
-    private ArrayList<Tile>      tiles;
-    private ArrayList<Rule>      antiRules;
+    private ArrayList<Tile> tiles;
+    private ArrayList<Rule> antiRules;
 
     // Save the board so we can look at it
     private char[][] board;
 
     // Getters
-    public ArrayList<Tile>      getTiles()     { return this.tiles; }
-    public ArrayList<Rule>      getAntiRules() { return this.antiRules; }
+    ArrayList<Tile> getTiles()     { return this.tiles; }
+    ArrayList<Rule> getAntiRules() { return this.antiRules; }
 
     // Default board
     private static char[][] DEFAULT_BOARD = {{'L', 'L', 'L', 'L', 'L', 'L'},

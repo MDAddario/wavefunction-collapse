@@ -1,10 +1,9 @@
 package procedural_generation;
 
-
 import java.util.ArrayList;
 import java.util.Random;
 
-public class State {
+class State {
 
     // Fields
     private ArrayList<Tile> tiles;
@@ -12,11 +11,11 @@ public class State {
     private Random          random;
 
     // Getter
-    public Tile   getTileZero() { return this.tiles.get(0); }
-    public double getEntropy()  { return this.entropy; }
+    Tile   getTileZero() { return this.tiles.get(0); }
+    double getEntropy()  { return this.entropy; }
 
     // Constructor
-    public State(ArrayList<Tile> tiles, Random random) {
+    State(ArrayList<Tile> tiles, Random random) {
 
         // Store attributes
         this.tiles  = new ArrayList<>(tiles);
@@ -43,7 +42,7 @@ public class State {
     }
 
     // Remove a tile from the state
-    public void removeTile(Tile tile) throws CollapsedStateException, ContractionException {
+    void removeTile(Tile tile) throws CollapsedStateException, ContractionException {
 
         // Compute entropy if tile removed
         if (this.tiles.contains(tile)) {
@@ -54,7 +53,7 @@ public class State {
                 throw new CollapsedStateException("State has reached collapsed state.\n");
 
             // Check for a contradiction
-            if (this.tiles.size() == 0)
+            if (this.tiles.isEmpty())
                 throw new ContractionException("Contradiction achieved.\n");
 
             // Else we need to know the entropy
@@ -63,7 +62,7 @@ public class State {
     }
 
     // Collapse to state based off weights
-    public void collapse() {
+    void collapse(boolean isDebug) {
 
         // Determine the number of all the weights (between 0 and 1)
         double weightSum = 0.0;
@@ -73,15 +72,14 @@ public class State {
         // Generate a random number between zero and weightSum
         double sampled = this.random.nextDouble() * weightSum;
 
-        //TODO:
-        System.out.println("Tile weights:");
-        for (Tile tile : this.tiles)
-            System.out.print(tile.getWeight() + " ");
-        System.out.println();
-        System.out.println("Total sum:");
-        System.out.println(weightSum);
-        System.out.println("RNG number:");
-        System.out.println(sampled);
+        if (isDebug) {
+            System.out.print("\tTile weights:\t");
+            for (Tile tile : this.tiles)
+                System.out.print(tile.getWeight() + " ");
+            System.out.println();
+            System.out.println("\tTotal sum:\t\t" + weightSum);
+            System.out.println("\tRNG number:\t\t" + sampled);
+        }
 
         // Determine what bracket the sampled number falls into
         for (Tile tile : this.tiles) {
@@ -93,9 +91,9 @@ public class State {
             // Found it
             } else {
 
-                //TODO:
-                System.out.println("Tile selected:");
-                System.out.println(tile);
+                if (isDebug) {
+                    System.out.println("\tTile selected:\t" + tile);
+                }
 
                 // Create new array list with only that tile
                 this.tiles = new ArrayList<>();
@@ -103,11 +101,11 @@ public class State {
                 return;
             }
         }
-        throw new RuntimeException("Collapse() method unable to select a state.\n");
+        throw new ArithmeticException("Collapse() method unable to select a state.\n");
     }
 
     // Check if state is collapsed
-    public boolean isCollapsed() {
+    boolean isCollapsed() {
         return this.tiles.size() == 1;
     }
 

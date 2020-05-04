@@ -3,30 +3,25 @@ package procedural_generation;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Rule {
+class Rule {
 
     private Tile      firstTile;
     private Tile      secondTile;
     private Direction direction;
 
     // Getter
-    public Tile      getSecondTile() { return this.secondTile; }
-    public Direction getDirection()  { return this.direction; }
+    Tile      getFirstTile()  { return this.firstTile; }
+    Tile      getSecondTile() { return this.secondTile; }
+    Direction getDirection()  { return this.direction; }
 
-    public Rule(Tile firstTile, Tile secondTile, Direction direction) {
+    Rule(Tile firstTile, Tile secondTile, Direction direction) {
         this.firstTile  = firstTile;
         this.secondTile = secondTile;
         this.direction  = direction;
     }
 
-    public Rule(char[][] board, int i, int j, Direction dir) {
+    Rule(char[][] board, int i, int j, Direction dir) {
         this(new Tile(board[i][j]), new Tile(board[i + dir.getDi()][j + dir.getDj()]), dir);
-    }
-
-    public boolean isApplicable(Pair pair, Wavefunction psi) {
-        if (this.direction.isPossible(pair, psi.getHeight(), psi.getWidth()))
-            return psi.getStates()[pair.i][pair.j].getTileZero().equals(this.firstTile);
-        return false;
     }
 
     @Override
@@ -39,12 +34,17 @@ public class Rule {
     }
 
     @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
     public String toString() {
         return this.firstTile.toString() + this.direction.toString() + this.secondTile.toString();
     }
 
     // Scramble the order of a list of rules
-    public ArrayList<Rule> scrambleRules(ArrayList<Rule> rules, Random random) {
+    ArrayList<Rule> scrambleRules(ArrayList<Rule> rules, Random random) {
 
         // Output list
         ArrayList<Rule> output = new ArrayList<>(rules.size());

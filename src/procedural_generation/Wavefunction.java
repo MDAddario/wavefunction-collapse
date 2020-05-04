@@ -21,26 +21,25 @@ public class Wavefunction {
     // Keep track of the superimposed states of tiles
     private State[][] states;
 
-    // Getters
-    public int       getHeight() { return this.height; }
-    public int       getWidth()  { return this.width; }
-    public State[][] getStates() { return this.states; }
-
     // Main
     public static void main(String[] args) {
 
         // Create wavefunction from default sample
-        int height = 3;
-        int width  = 3;
+        int height = 10;
+        int width = 10;
         Wavefunction phi = new Wavefunction(new Sample(), height, width);
 
-        // Run the game
-        boolean isDebug = false;
-        phi.quantumLoop(isDebug);
-
-        // Print sample and collapsed version
+        // Run the game in a loop
         phi.visualizeSample();
-        phi.visualizePhi();
+        for (int i = 0; i < 5; i++) {
+
+            // Run the simulations
+            boolean isDebug = false;
+            phi.quantumLoop(isDebug);
+
+            // Print sample and collapsed version
+            phi.visualizePhi();
+        }
     }
 
     // Constructor
@@ -78,22 +77,21 @@ public class Wavefunction {
         double EPSILON     = 0.0001;
 
         // Determine the smallest entropy over the board
-        double min_entropy = MAX_ENTROPY;
+        double minEntropy = MAX_ENTROPY;
 
         for (State[] row : this.states)
             for (State state : row)
-                if (!state.isCollapsed())
-                    if (state.getEntropy() < min_entropy)
-                        min_entropy = state.getEntropy();
+                if (!state.isCollapsed() && state.getEntropy() < minEntropy)
+                    minEntropy = state.getEntropy();
 
         // Determine all states with this entropy
         ArrayList<Pair> pairs = new ArrayList<>();
 
         for (int i = 0; i < height; i++)
             for (int j = 0; j < width; j++)
-                if (!this.states[i][j].isCollapsed())
-                    if (Math.abs(this.states[i][j].getEntropy() - min_entropy) < EPSILON)
-                        pairs.add(new Pair(i, j));
+                if (!this.states[i][j].isCollapsed() &&
+                        Math.abs(this.states[i][j].getEntropy() - minEntropy) < EPSILON)
+                    pairs.add(new Pair(i, j));
 
         // All states have been collapsed
         if (pairs.isEmpty())
@@ -109,7 +107,8 @@ public class Wavefunction {
 
         // Check all rules
         for (Rule antiRule : this.sample.getAntiRules())
-            if (antiRule.isApplicable(pair, this)) {
+            if (antiRule.getDirection().isPossible(pair, this.height, this.width) &&
+                    this.states[pair.i][pair.j].getTileZero().equals(antiRule.getFirstTile())) {
 
                 Pair targetPair = new Pair(pair, antiRule);
                 try {
@@ -160,28 +159,17 @@ public class Wavefunction {
                 break;
 
             if (isDebug) {
-                System.out.println("Lowest entropy pair (i, j).");
-                System.out.println("(" + pair.i + ", " + pair.j + ")");
+                System.out.println("Lowest entropy pair (i, j): (" + pair.i + ", " + pair.j + ")");
             }
 
             // Collapse the state
-            this.states[pair.i][pair.j].collapse();
+            this.states[pair.i][pair.j].collapse(isDebug);
 
             if (isDebug) {
                 System.out.println("State collapsed.");
                 for (int i = 0; i < this.height; i++) {
                     for (int j = 0; j < this.width; j++) {
                         System.out.print(this.states[i][j] + " ");
-                    }
-                    System.out.println();
-                }
-            }
-
-            if (isDebug) {
-                System.out.println("isCollapsed()?");
-                for (int i = 0; i < this.height; i++) {
-                    for (int j = 0; j < this.width; j++) {
-                        System.out.print(this.states[i][j].isCollapsed() + " ");
                     }
                     System.out.println();
                 }
@@ -197,7 +185,6 @@ public class Wavefunction {
                 this.freshSuperposition();
 
                 if (isDebug) {
-
                     System.out.println("==FRESH SUPERPOSITION==.");
                 }
             }
@@ -207,16 +194,6 @@ public class Wavefunction {
                 for (int i = 0; i < this.height; i++) {
                     for (int j = 0; j < this.width; j++) {
                         System.out.print(this.states[i][j] + " ");
-                    }
-                    System.out.println();
-                }
-            }
-
-            if (isDebug) {
-                System.out.println("isCollapsed()?");
-                for (int i = 0; i < this.height; i++) {
-                    for (int j = 0; j < this.width; j++) {
-                        System.out.print(this.states[i][j].isCollapsed() + " ");
                     }
                     System.out.println();
                 }

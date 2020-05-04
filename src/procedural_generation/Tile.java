@@ -2,7 +2,7 @@ package procedural_generation;
 
 import java.util.ArrayList;
 
-public class Tile {
+class Tile {
 
     // Attributes
     private char   type;
@@ -10,17 +10,17 @@ public class Tile {
     private double weight;
 
     // Getters
-    public double getWeight() { return this.weight; }
+    double getWeight() { return this.weight; }
 
     // Constructors
-    public Tile(char type, int count, double weight) {
+    Tile(char type, int count, double weight) {
         this.type   = type;
         this.count  = count;
         this.weight = weight;
     }
 
     // Default constructor
-    public Tile(char type) {
+    Tile(char type) {
         this(type, 1, 0.0);
     }
 
@@ -32,22 +32,31 @@ public class Tile {
     }
 
     @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
     public String toString() {
         return type + " ";
     }
 
     // Increment the counter
-    public void incrementCount() {
+    void incrementCount() {
         this.count++;
     }
 
     // Compute the weights for a set of tiles and counts
-    public static void computeWeights(ArrayList<Tile> tiles) {
+    static void computeWeights(ArrayList<Tile> tiles) {
 
         // Determine the total number of tiles
         int sum = 0;
         for (Tile tile : tiles)
             sum += tile.count;
+
+        // Take care of odd strange issue
+        if (sum == 0)
+            throw new ArithmeticException("sum variable has value zero.");
 
         // Compute the weights
         for (Tile tile : tiles)
@@ -55,7 +64,7 @@ public class Tile {
     }
 
     // Construct an array list of the available types
-    public static ArrayList<Character> getTypes(ArrayList<Tile> tiles) {
+    static ArrayList<Character> getTypes(ArrayList<Tile> tiles) {
 
         // Create the array list
         ArrayList<Character> list = new ArrayList<>();
@@ -68,7 +77,7 @@ public class Tile {
     }
 
     // Construct an array list of the weights
-    public static ArrayList<Double> getWeights(ArrayList<Tile> tiles) {
+    static ArrayList<Double> getWeights(ArrayList<Tile> tiles) {
 
         // Create the array list
         ArrayList<Double> list = new ArrayList<>();

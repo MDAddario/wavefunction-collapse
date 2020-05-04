@@ -5,14 +5,14 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-public class IndexRandomizer implements Iterable<Integer>{
+class IndexRandomizer implements Iterable<Integer>{
 
     // Attributes
     private int    maxIndex;
     private Random random;
 
     // Constructor
-    public IndexRandomizer(int maxIndex, Random random) {
+    IndexRandomizer(int maxIndex, Random random) {
         this.maxIndex = maxIndex;
         this.random   = random;
     }
