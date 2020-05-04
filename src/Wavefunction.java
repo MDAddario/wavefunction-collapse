@@ -29,6 +29,12 @@ public class Wavefunction {
     // Main
     public static void main(String[] args) {
 
+        // Create wavefunction from default sample
+        Wavefunction phi = new Wavefunction(new Sample(), 2, 2);
+
+        // Run the game
+        phi.quantumLoop();
+
         /*
         // Create wavefunction from default sample
         Wavefunction phi = new Wavefunction(new Sample(), 2, 2);
@@ -69,7 +75,7 @@ public class Wavefunction {
 
         // Dimensions of new landscape
         this.height = height;
-        this.width = width;
+        this.width  = width;
 
         // Start fresh
         this.generationCount = 0;
@@ -107,6 +113,9 @@ public class Wavefunction {
                     if (state.getEntropy() < min_entropy)
                         min_entropy = state.getEntropy();
 
+        //TODO:
+        System.out.println("min_entropy: " + min_entropy);
+
         // Determine all states with this entropy
         ArrayList<Pair> pairs = new ArrayList<>();
 
@@ -127,7 +136,12 @@ public class Wavefunction {
     // Propagate the anti rules to the neighbors
     private void propagateAntiRules(Pair pair) throws ContractionException {
 
-        this.states[0][0].removeTile(this.tiles.get(0));
+        //this.states[0][0].removeTile(this.tiles.get(0));
+
+        //antiUpRules;
+        //antiDownRules;
+        //antiLeftRules;
+        //antiRightRules;
     }
 
     // Performs the wavefunction collapse procedure until completion
@@ -135,15 +149,43 @@ public class Wavefunction {
 
         while(true) {
 
+            //TODO:
+            for (int i = 0; i < this.height; i++) {
+                for (int j = 0; j < this.width; j++) {
+                    System.out.print(this.states[i][j] + " ");
+                }
+                System.out.println();
+            }
+
+
             // Find the pair of lowest entropy
             Pair pair = this.isolateLowestEntropy();
+
+            //TODO:
+            for (int i = 0; i < this.height; i++) {
+                for (int j = 0; j < this.width; j++) {
+                    System.out.print(Math.round(this.states[i][j].getEntropy()) + " ");
+                }
+                System.out.println();
+            }
 
             // Check for procedure completed
             if (pair == null)
                 break;
 
+            //TODO:
+            System.out.println("Lowest: (" + pair.i + ", " + pair.j + ")");
+
             // Collapse the state
             this.states[pair.i][pair.j].collapse();
+
+            //TODO:
+            for (int i = 0; i < this.height; i++) {
+                for (int j = 0; j < this.width; j++) {
+                    System.out.print(this.states[i][j] + " ");
+                }
+                System.out.println();
+            }
 
             // Propagate anti rules
             try {
