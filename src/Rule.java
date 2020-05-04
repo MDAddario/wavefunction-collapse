@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Rule {
 
     private Tile      firstTile;
@@ -19,7 +22,7 @@ public class Rule {
     }
 
     public boolean isApplicable(Pair pair, Wavefunction psi) {
-        if (this.direction.isPossible(pair.i, pair.j, psi.getHeight(), psi.getWidth()))
+        if (this.direction.isPossible(pair, psi.getHeight(), psi.getWidth()))
             return psi.getStates()[pair.i][pair.j].getTileZero().equals(this.firstTile);
         return false;
     }
@@ -36,5 +39,18 @@ public class Rule {
     @Override
     public String toString() {
         return this.firstTile.toString() + this.direction.toString() + this.secondTile.toString();
+    }
+
+    // Scramble the order of a list of rules
+    public ArrayList<Rule> scrambleRules(ArrayList<Rule> rules, Random random) {
+
+        // Output list
+        ArrayList<Rule> output = new ArrayList<>(rules.size());
+
+        // Randomly select when to add
+        for (int i : new IndexRandomizer(rules.size(), random))
+            output.add(rules.get(i));
+
+        return output;
     }
 }

@@ -28,8 +28,8 @@ public class Wavefunction {
     public static void main(String[] args) {
 
         // Create wavefunction from default sample
-        int height = 12;
-        int width  = 12;
+        int height = 3;
+        int width  = 3;
         Wavefunction phi = new Wavefunction(new Sample(), height, width);
 
         // Run the game
@@ -51,14 +51,8 @@ public class Wavefunction {
         this.height = height;
         this.width  = width;
 
-        // Start fresh
-        this.generationCount = 0;
-
         // Create random number generator
         this.random = new Random(System.currentTimeMillis());
-
-        // Create a fresh superposition
-        this.freshSuperposition();
     }
 
     // Create a fresh superposition of all states at all tiles
@@ -127,6 +121,12 @@ public class Wavefunction {
 
     // Performs the wavefunction collapse procedure until completion
     public void quantumLoop(boolean isDebug) {
+
+        // Start fresh
+        this.generationCount = 0;
+
+        // Create a fresh superposition
+        this.freshSuperposition();
 
         while(true) {
 

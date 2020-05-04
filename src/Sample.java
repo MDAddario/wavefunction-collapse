@@ -5,16 +5,13 @@ public class Sample {
     // Relevant information to be passed to wavefunction
     private ArrayList<Tile>      tiles;
     private ArrayList<Rule>      antiRules;
-    private ArrayList<Direction> allDirs;
 
     // Save the board so we can look at it
     private char[][] board;
 
     // Getters
-    public char[][]             getBoard()     { return this.board; }
     public ArrayList<Tile>      getTiles()     { return this.tiles; }
     public ArrayList<Rule>      getAntiRules() { return this.antiRules; }
-    public ArrayList<Direction> getAllDirections() {return this.allDirs; }
 
     // Default board
     private static char[][] DEFAULT_BOARD = {{'L', 'L', 'L', 'L', 'L', 'L'},
@@ -72,7 +69,7 @@ public class Sample {
         Tile.computeWeights(this.tiles);
 
         // Determine the rules
-        this.allDirs = Direction.getAllDirections(radius);
+        ArrayList<Direction> allDirs = Direction.getAllDirections(radius);
         ArrayList<Rule> rules = new ArrayList<>();
         int height = board.length;
         int width  = board[0].length;
@@ -82,7 +79,7 @@ public class Sample {
             for (int j = 0; j < width; j++) {
 
                 // Span all possible rules
-                for (Direction dir : this.allDirs)
+                for (Direction dir : allDirs)
                     if (dir.isPossible(i, j, height, width)) {
                         Rule rule = new Rule(board, i, j, dir);
                         if (!rules.contains(rule))
@@ -94,7 +91,7 @@ public class Sample {
 
                 for (Tile firstTile : this.tiles)
                     for (Tile secondTile : this.tiles)
-                        for (Direction dir : this.allDirs) {
+                        for (Direction dir : allDirs) {
 
                             // Construct rule
                             Rule rule = new Rule(firstTile, secondTile, dir);
