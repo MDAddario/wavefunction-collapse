@@ -1,8 +1,5 @@
-import java.util.ArrayList;
-import java.util.Random;
-
 public class Wavefunction {
-
+/*
     // Save sample board
     private char[][] board;
 
@@ -291,4 +288,6 @@ public class Wavefunction {
             System.out.println();
         }
     }
+
+ */
 }

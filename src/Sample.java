@@ -3,16 +3,18 @@ import java.util.ArrayList;
 public class Sample {
 
     // Relevant information to be passed to wavefunction
-    private ArrayList<Tile> tiles;
-    private ArrayList<Rule> antiRules;
+    private ArrayList<Tile>      tiles;
+    private ArrayList<Rule>      antiRules;
+    private ArrayList<Direction> allDirs;
 
     // Save the board so we can look at it
     private char[][] board;
 
     // Getters
-    public char[][]        getBoard()     { return this.board; }
-    public ArrayList<Tile> getTiles()     { return this.tiles; }
-    public ArrayList<Rule> getAntiRules() { return this.antiRules; }
+    public char[][]             getBoard()     { return this.board; }
+    public ArrayList<Tile>      getTiles()     { return this.tiles; }
+    public ArrayList<Rule>      getAntiRules() { return this.antiRules; }
+    public ArrayList<Direction> getAllDirections() {return this.allDirs; }
 
     // Default board
     private static char[][] DEFAULT_BOARD = {{'L', 'L', 'L', 'L', 'L', 'L'},
@@ -27,17 +29,20 @@ public class Sample {
         // Create the default sample
         Sample sample = new Sample();
 
+        // Visualize the board
+        sample.visualize();
+
         // Print the sample information
         System.out.println(sample);
     }
 
     // Default constructor
     public Sample() {
-        this(DEFAULT_BOARD);
+        this(DEFAULT_BOARD, 1.0);
     }
 
     // Constructor
-    public Sample(char[][] board) {
+    public Sample(char[][] board, double radius) {
 
         // Save the board
         this.board = board;
@@ -67,54 +72,38 @@ public class Sample {
         Tile.computeWeights(this.tiles);
 
         // Determine the rules
+        this.allDirs = Direction.getAllDirections(radius);
         ArrayList<Rule> rules = new ArrayList<>();
         int height = board.length;
         int width  = board[0].length;
 
+        // Span all board tiles
         for (int i = 0; i < height; i++)
             for (int j = 0; j < width; j++) {
 
-                // Check downward rule
-                if (i != 0) {
-                    Rule rule = new Rule(new Tile(board[i][j]), new Tile(board[i-1][j]), 'D');
-                    if (!rules.contains(rule))
-                        rules.add(rule);
-                }
-                // Check upward rule
-                if (i != height-1) {
-                    Rule rule = new Rule(new Tile(board[i][j]), new Tile(board[i+1][j]), 'U');
-                    if (!rules.contains(rule))
-                        rules.add(rule);
-                }
-                // Check rightward rule
-                if (j != 0) {
-                    Rule rule = new Rule(new Tile(board[i][j]), new Tile(board[i][j-1]), 'R');
-                    if (!rules.contains(rule))
-                        rules.add(rule);
-                }
-                // Check leftward rule
-                if (j != width-1) {
-                    Rule rule = new Rule(new Tile(board[i][j]), new Tile(board[i][j+1]), 'L');
-                    if (!rules.contains(rule))
-                        rules.add(rule);
-                }
+                // Span all possible rules
+                for (Direction dir : this.allDirs)
+                    if (dir.isPossible(i, j, height, width)) {
+                        Rule rule = new Rule(board, i, j, dir);
+                        if (!rules.contains(rule))
+                            rules.add(rule);
+                    }
+
+                // Determine anti rules
+                this.antiRules = new ArrayList<>();
+
+                for (Tile firstTile : this.tiles)
+                    for (Tile secondTile : this.tiles)
+                        for (Direction dir : this.allDirs) {
+
+                            // Construct rule
+                            Rule rule = new Rule(firstTile, secondTile, dir);
+
+                            // Add it to anti rules if they don't exist
+                            if (!rules.contains(rule))
+                                this.antiRules.add(rule);
+                        }
             }
-
-        // Determine anti rules
-        this.antiRules = new ArrayList<>();
-        char[] relationships = {'U', 'D', 'L', 'R'};
-
-        for (Tile firstTile : this.tiles)
-            for (Tile secondTile : this.tiles)
-                for (char relationship : relationships) {
-
-                    // Construct rule
-                    Rule rule = new Rule(firstTile, secondTile, relationship);
-
-                    // Add it to anti rules if they don't exist
-                    if (!rules.contains(rule))
-                        this.antiRules.add(rule);
-                }
     }
 
     @Override
@@ -129,7 +118,16 @@ public class Sample {
             lineThree.append(rule.toString());
             lineThree.append("\n");
         }
-
         return lineOne + lineTwo + lineThree;
+    }
+
+    // Visualize the board
+    public void visualize() {
+        System.out.println("Visualizing sample:");
+        for (char[] row : this.board) {
+            for (char c : row)
+                System.out.print(c + " ");
+            System.out.println();
+        }
     }
 }

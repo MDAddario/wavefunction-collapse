@@ -6,6 +6,10 @@ public class Direction {
     private int di;
     private int dj;
 
+    // Getters
+    public int getDi() { return this.di; }
+    public int getDj() { return this.dj; }
+
     // Constructor
     public Direction(int di, int dj) {
         this.di = di;
@@ -35,18 +39,23 @@ public class Direction {
         ArrayList<Direction> allDirections = new ArrayList<>();
 
         // Span the unit square
-        for (int di = (int)Math.floor(-radius); di <= radius + EPSILON; di += 1)
-            for (int dj = (int)Math.floor(-radius); dj <= radius + EPSILON; dj += 1)
+        for (int di = (int) Math.floor(-radius); di <= radius + EPSILON; di += 1)
+            for (int dj = (int) Math.floor(-radius); dj <= radius + EPSILON; dj += 1) {
+
+                // Funny case
+                if (di == 0 && dj == 0)
+                    continue;
+                // Choose those within the circle
                 if (Math.sqrt(di * di + dj * dj) < radius + EPSILON)
                     allDirections.add(new Direction(di, dj));
-
+            }
         return allDirections;
     }
 
     // Check if the direction is possible from the given coordinates
-    public boolean isPossible(Direction dir, int i, int j, int height, int width) {
-        return 0 <= i + dir.di && i + dir.di < height &&
-                0 <= j + dir.dj && j + dir.dj < width;
+    public boolean isPossible(int i, int j, int height, int width) {
+        return 0 <= i + this.di && i + this.di < height &&
+                0 <= j + this.dj && j + this.dj < width;
     }
 
     // Main attraction

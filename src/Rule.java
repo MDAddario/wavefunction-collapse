@@ -10,6 +10,10 @@ public class Rule {
         this.direction  = direction;
     }
 
+    public Rule(char[][] board, int i, int j, Direction dir) {
+        this(new Tile(board[i][j]), new Tile(board[i + dir.getDi()][j + dir.getDj()]), dir);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Rule)
