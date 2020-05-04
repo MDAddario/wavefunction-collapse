@@ -9,7 +9,8 @@ public class State {
     private Random          random;
 
     // Getter
-    public double getEntropy() { return this.entropy; }
+    public Tile   getTileZero() { return this.tiles.get(0); }
+    public double getEntropy()  { return this.entropy; }
 
     // Constructor
     public State(ArrayList<Tile> tiles, Random random) {
@@ -39,16 +40,21 @@ public class State {
     }
 
     // Remove a tile from the state
-    public void removeTile(Tile tile) throws ContractionException {
+    public void removeTile(Tile tile) throws CollapsedStateException, ContractionException {
 
         // Compute entropy if tile removed
         if (this.tiles.contains(tile)) {
             this.tiles.remove(tile);
 
+            // Check for newly collapsed state
+            if (this.tiles.size() == 1)
+                throw new CollapsedStateException("State has reached collapsed state.\n");
+
             // Check for a contradiction
             if (this.tiles.size() == 0)
                 throw new ContractionException("Contradiction achieved.\n");
 
+            // Else we need to know the entropy
             this.computeEntropy();
         }
     }

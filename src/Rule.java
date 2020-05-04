@@ -6,6 +6,10 @@ public class Rule {
     private Tile secondTile;
     private char relationship;
 
+    // Getter
+    public Tile getFirstTile()  { return this.firstTile; }
+    public Tile getSecondTile() { return this.secondTile; }
+
     public Rule(Tile firstTile, Tile secondTile, char relationship) {
         this.firstTile    = firstTile;
         this.secondTile   = secondTile;

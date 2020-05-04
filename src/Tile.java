@@ -7,7 +7,7 @@ public class Tile {
     private int    count;
     private double weight;
 
-    // Getter
+    // Getters
     public double getWeight() { return this.weight; }
 
     // Constructors

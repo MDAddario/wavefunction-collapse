@@ -6,7 +6,11 @@ public class Sample {
     private ArrayList<Tile> tiles;
     private ArrayList<Rule> antiRules;
 
+    // Save the board so we can look at it
+    private char[][] board;
+
     // Getters
+    public char[][]        getBoard()     { return this.board; }
     public ArrayList<Tile> getTiles()     { return this.tiles; }
     public ArrayList<Rule> getAntiRules() { return this.antiRules; }
 
@@ -34,6 +38,9 @@ public class Sample {
 
     // Constructor
     public Sample(char[][] board) {
+
+        // Save the board
+        this.board = board;
 
         // Determine tile types and count the occurrences
         this.tiles = new ArrayList<>();
