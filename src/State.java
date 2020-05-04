@@ -70,15 +70,6 @@ public class State {
         // Generate a random number between zero and weightSum
         double sampled = this.random.nextDouble() * weightSum;
 
-        //TODO:
-        System.out.println("Tile weights:");
-        for (Tile tile : this.tiles)
-            System.out.print(tile.getWeight() + " ");
-        System.out.println("Total sum:");
-        System.out.println(weightSum);
-        System.out.println("RNG number:");
-        System.out.println(sampled);
-
         // Determine what bracket the sampled number falls into
         for (Tile tile : this.tiles) {
 
@@ -88,10 +79,6 @@ public class State {
 
             // Found it
             } else {
-
-                //TODO:
-                System.out.println("Tile selected:");
-                System.out.println(tile);
 
                 // Create new array list with only that tile
                 this.tiles = new ArrayList<>();

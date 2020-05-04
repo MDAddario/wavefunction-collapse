@@ -58,6 +58,10 @@ public class Direction {
                 0 <= j + this.dj && j + this.dj < width;
     }
 
+    public boolean isPossible(Pair pair, int height, int width) {
+        return isPossible(pair.i, pair.j, height, width);
+    }
+
     // Main attraction
     public static void main(String[] args) {
 

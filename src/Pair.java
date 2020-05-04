@@ -8,19 +8,8 @@ public class Pair {
         this.j = j;
     }
 
-    public Pair down() {
-        return new Pair(this.i-1, this.j);
-    }
-
-    public Pair up() {
-        return new Pair(this.i+1, this.j);
-    }
-
-    public Pair left() {
-        return new Pair(this.i, this.j-1);
-    }
-
-    public Pair right() {
-        return new Pair(this.i, this.j+1);
+    public Pair(Pair pair, Rule rule) {
+        this.i = pair.i + rule.getDirection().getDi();
+        this.j = pair.j + rule.getDirection().getDj();
     }
 }

@@ -4,6 +4,10 @@ public class Rule {
     private Tile      secondTile;
     private Direction direction;
 
+    // Getter
+    public Tile      getSecondTile() { return this.secondTile; }
+    public Direction getDirection()  { return this.direction; }
+
     public Rule(Tile firstTile, Tile secondTile, Direction direction) {
         this.firstTile  = firstTile;
         this.secondTile = secondTile;
@@ -12,6 +16,12 @@ public class Rule {
 
     public Rule(char[][] board, int i, int j, Direction dir) {
         this(new Tile(board[i][j]), new Tile(board[i + dir.getDi()][j + dir.getDj()]), dir);
+    }
+
+    public boolean isApplicable(Pair pair, Wavefunction psi) {
+        if (this.direction.isPossible(pair.i, pair.j, psi.getHeight(), psi.getWidth()))
+            return psi.getStates()[pair.i][pair.j].getTileZero().equals(this.firstTile);
+        return false;
     }
 
     @Override

@@ -1,14 +1,10 @@
-public class Wavefunction {
-/*
-    // Save sample board
-    private char[][] board;
+import java.util.ArrayList;
+import java.util.Random;
 
-    // Attributes to steal from the sample
-    private ArrayList<Tile> tiles;
-    private ArrayList<Rule> antiUpRules;
-    private ArrayList<Rule> antiDownRules;
-    private ArrayList<Rule> antiLeftRules;
-    private ArrayList<Rule> antiRightRules;
+public class Wavefunction {
+
+    // Save sample board
+    private Sample sample;
 
     // Dimensions of output
     private int height;
@@ -23,16 +19,21 @@ public class Wavefunction {
     // Keep track of the superimposed states of tiles
     private State[][] states;
 
+    // Getters
+    public int       getHeight() { return this.height; }
+    public int       getWidth()  { return this.width; }
+    public State[][] getStates() { return this.states; }
+
     // Main
     public static void main(String[] args) {
 
         // Create wavefunction from default sample
-        int height = 8;
-        int width  = 8;
+        int height = 12;
+        int width  = 12;
         Wavefunction phi = new Wavefunction(new Sample(), height, width);
 
         // Run the game
-        boolean isDebug = true;
+        boolean isDebug = false;
         phi.quantumLoop(isDebug);
 
         // Print sample and collapsed version
@@ -43,16 +44,8 @@ public class Wavefunction {
     // Constructor
     public Wavefunction(Sample sample, int height, int width) {
 
-        // Save the board
-        this.board = sample.getBoard();
-
-        // Take all the elements from the sample
-        this.tiles = sample.getTiles();
-        ArrayList<Rule> antiRules = sample.getAntiRules();
-        this.antiUpRules    = Rule.upRules(antiRules);
-        this.antiDownRules  = Rule.downRules(antiRules);
-        this.antiLeftRules  = Rule.leftRules(antiRules);
-        this.antiRightRules = Rule.rightRules(antiRules);
+        // Save the sample
+        this.sample = sample;
 
         // Dimensions of new landscape
         this.height = height;
@@ -78,7 +71,7 @@ public class Wavefunction {
         this.states = new State[this.height][this.width];
         for (int i = 0; i < height; i++)
             for (int j = 0; j < width; j++)
-                this.states[i][j] = new State(this.tiles, this.random);
+                this.states[i][j] = new State(this.sample.getTiles(), this.random);
     }
 
     // Select the lowest entropy state to be collapsed
@@ -118,54 +111,18 @@ public class Wavefunction {
     // Propagate the anti rules to the neighbors
     private void propagateAntiRules(Pair pair) throws ContractionException {
 
-        // Check downward rule
-        if (pair.i != 0) {
-            for (Rule antiRule : this.antiDownRules)
-                if (this.states[pair.i][pair.j].getTileZero().equals(antiRule.getFirstTile())) {
-                    try {
-                        this.states[pair.i-1][pair.j].removeTile(antiRule.getSecondTile());
+        // Check all rules
+        for (Rule antiRule : this.sample.getAntiRules())
+            if (antiRule.isApplicable(pair, this)) {
 
-                    } catch (CollapsedStateException ex) {
-                        this.propagateAntiRules(pair.down());
-                    }
-                }
-        }
-        // Check upward rule
-        if (pair.i != this.height-1) {
-            for (Rule antiRule : this.antiUpRules)
-                if (this.states[pair.i][pair.j].getTileZero().equals(antiRule.getFirstTile())) {
-                    try {
-                        this.states[pair.i+1][pair.j].removeTile(antiRule.getSecondTile());
+                Pair targetPair = new Pair(pair, antiRule);
+                try {
+                    this.states[targetPair.i][targetPair.j].removeTile(antiRule.getSecondTile());
 
-                    } catch (CollapsedStateException ex) {
-                        this.propagateAntiRules(pair.up());
-                    }
+                } catch (CollapsedStateException ex) {
+                    this.propagateAntiRules(targetPair);
                 }
-        }
-        // Check rightward rule
-        if (pair.j != 0) {
-            for (Rule antiRule : this.antiLeftRules)
-                if (this.states[pair.i][pair.j].getTileZero().equals(antiRule.getFirstTile())) {
-                    try {
-                        this.states[pair.i][pair.j-1].removeTile(antiRule.getSecondTile());
-
-                    } catch (CollapsedStateException ex) {
-                        this.propagateAntiRules(pair.left());
-                    }
-                }
-        }
-        // Check leftward rule
-        if (pair.j != this.width-1) {
-            for (Rule antiRule : this.antiRightRules)
-                if (this.states[pair.i][pair.j].getTileZero().equals(antiRule.getFirstTile())) {
-                    try {
-                        this.states[pair.i][pair.j+1].removeTile(antiRule.getSecondTile());
-
-                    } catch (CollapsedStateException ex) {
-                        this.propagateAntiRules(pair.right());
-                    }
-                }
-        }
+            }
     }
 
     // Performs the wavefunction collapse procedure until completion
@@ -270,24 +227,16 @@ public class Wavefunction {
     }
 
     public void visualizeSample() {
-
-        System.out.println("Visualizing sample.");
-        for (char[] row : this.board) {
-            for (char c : row)
-                System.out.print(c + " ");
-            System.out.println();
-        }
+        this.sample.visualize();
     }
 
     public void visualizePhi() {
 
-        System.out.println("Visualizing sample.");
+        System.out.println("Visualizing phi:");
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++)
                 System.out.print(this.states[i][j].getTileZero());
             System.out.println();
         }
     }
-
- */
 }
