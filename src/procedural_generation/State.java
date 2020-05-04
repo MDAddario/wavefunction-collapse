@@ -38,6 +38,9 @@ class State {
             sumB += weight * Math.log(weight);
         }
 
+        if (sumA == 0.0)
+            throw new ArithmeticException("Entropy is bad.");
+
         this.entropy = Math.log(sumA) - sumB / sumA;
     }
 
@@ -62,7 +65,7 @@ class State {
     }
 
     // Collapse to state based off weights
-    void collapse(boolean isDebug) {
+    void collapse() {
 
         // Determine the number of all the weights (between 0 and 1)
         double weightSum = 0.0;
@@ -71,15 +74,6 @@ class State {
 
         // Generate a random number between zero and weightSum
         double sampled = this.random.nextDouble() * weightSum;
-
-        if (isDebug) {
-            System.out.print("\tTile weights:\t");
-            for (Tile tile : this.tiles)
-                System.out.print(tile.getWeight() + " ");
-            System.out.println();
-            System.out.println("\tTotal sum:\t\t" + weightSum);
-            System.out.println("\tRNG number:\t\t" + sampled);
-        }
 
         // Determine what bracket the sampled number falls into
         for (Tile tile : this.tiles) {
@@ -90,10 +84,6 @@ class State {
 
             // Found it
             } else {
-
-                if (isDebug) {
-                    System.out.println("\tTile selected:\t" + tile);
-                }
 
                 // Create new array list with only that tile
                 this.tiles = new ArrayList<>();

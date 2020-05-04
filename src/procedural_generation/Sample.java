@@ -16,11 +16,11 @@ public class Sample {
     ArrayList<Rule> getAntiRules() { return this.antiRules; }
 
     // Default board
-    private static char[][] DEFAULT_BOARD = {{'L', 'L', 'L', 'L', 'L', 'L'},
-                                             {'L', 'L', 'L', 'C', 'C', 'L'},
-                                             {'L', 'L', 'C', 'S', 'S', 'C'},
-                                             {'L', 'C', 'S', 'S', 'S', 'S'},
-                                             {'C', 'S', 'S', 'S', 'S', 'S'}};
+    private static final char[][] DEFAULT_BOARD = {{'L', 'L', 'L', 'L', 'L', 'L'},
+                                                   {'L', 'L', 'L', 'C', 'C', 'L'},
+                                                   {'L', 'L', 'C', 'S', 'S', 'C'},
+                                                   {'L', 'C', 'S', 'S', 'S', 'S'},
+                                                   {'C', 'S', 'S', 'S', 'S', 'S'}};
 
     // The main attraction
     public static void main(String[] args) {
@@ -46,11 +46,20 @@ public class Sample {
         // Save the board
         this.board = board;
 
+        // Count the tiles
+        countTiles();
+
+        // Determine the rules
+        determineRules(radius);
+    }
+
+    private void countTiles() {
+
         // Determine tile types and count the occurrences
         this.tiles = new ArrayList<>();
 
         // Parse the input board
-        for (char[] row : board)
+        for (char[] row : this.board)
             for (char type : row) {
 
                 // Create tile object
@@ -69,40 +78,47 @@ public class Sample {
 
         // Compute the weights
         Tile.computeWeights(this.tiles);
+    }
+
+    private void determineRules(double radius) {
 
         // Determine the rules
         ArrayList<Direction> allDirs = Direction.getAllDirections(radius);
         ArrayList<Rule> rules = new ArrayList<>();
-        int height = board.length;
-        int width  = board[0].length;
+        int height = this.board.length;
+        int width  = this.board[0].length;
 
         // Span all board tiles
         for (int i = 0; i < height; i++)
-            for (int j = 0; j < width; j++) {
+            for (int j = 0; j < width; j++)
 
                 // Span all possible rules
                 for (Direction dir : allDirs)
                     if (dir.isPossible(i, j, height, width)) {
-                        Rule rule = new Rule(board, i, j, dir);
+                        Rule rule = new Rule(this.board, i, j, dir);
                         if (!rules.contains(rule))
                             rules.add(rule);
                     }
 
-                // Determine anti rules
-                this.antiRules = new ArrayList<>();
+        // Determine anti rules
+        determineAntiRules(allDirs, rules);
+    }
 
-                for (Tile firstTile : this.tiles)
-                    for (Tile secondTile : this.tiles)
-                        for (Direction dir : allDirs) {
+    private void determineAntiRules(ArrayList<Direction> allDirs, ArrayList<Rule> rules) {
+        // Determine anti rules
+        this.antiRules = new ArrayList<>();
 
-                            // Construct rule
-                            Rule rule = new Rule(firstTile, secondTile, dir);
+        for (Tile firstTile : this.tiles)
+            for (Tile secondTile : this.tiles)
+                for (Direction dir : allDirs) {
 
-                            // Add it to anti rules if they don't exist
-                            if (!rules.contains(rule))
-                                this.antiRules.add(rule);
-                        }
-            }
+                    // Construct rule
+                    Rule rule = new Rule(firstTile, secondTile, dir);
+
+                    // Add it to anti rules if they don't exist
+                    if (!rules.contains(rule))
+                        this.antiRules.add(rule);
+                }
     }
 
     @Override

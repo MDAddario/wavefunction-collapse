@@ -30,7 +30,7 @@ class IndexRandomizer implements Iterable<Integer>{
         // Show off our scrambler!
         int maxIndex = 20;
         for (int i : new IndexRandomizer(maxIndex, random))
-            System.out.print(i + " ");
+           System.out.print(i + " ");
         System.out.println();
     }
 

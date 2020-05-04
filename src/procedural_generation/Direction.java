@@ -40,7 +40,7 @@ class Direction {
     static ArrayList<Direction> getAllDirections(double radius) {
 
         // Stability
-        double EPSILON = 0.0001;
+        final double EPSILON = 0.0001;
 
         // Output array
         ArrayList<Direction> allDirections = new ArrayList<>();
@@ -53,7 +53,7 @@ class Direction {
                 if (di == 0 && dj == 0)
                     continue;
                 // Choose those within the circle
-                if (Math.sqrt(di * di + dj * dj) < radius + EPSILON)
+                if (Math.sqrt((double)di * di + dj * dj) < radius + EPSILON)
                     allDirections.add(new Direction(di, dj));
             }
         return allDirections;
