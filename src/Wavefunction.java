@@ -127,6 +127,7 @@ public class Wavefunction {
     // Propagate the anti rules to the neighbors
     private void propagateAntiRules(Pair pair) throws ContractionException {
 
+        this.states[0][0].removeTile(this.tiles.get(0));
     }
 
     // Performs the wavefunction collapse procedure until completion
