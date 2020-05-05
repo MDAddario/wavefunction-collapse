@@ -50,11 +50,16 @@ class Wavefunction {
         this.sample = sample;
 
         // Dimensions of new landscape
-        this.height = height;
-        this.width  = width;
+        this.setDimensions(height, width);
 
         // Create random number generator
         this.random = new Random(System.currentTimeMillis());
+    }
+
+    void setDimensions(int height, int width) {
+
+        this.height = height;
+        this.width  = width;
     }
 
     // Create a fresh superposition of all states at all tiles
@@ -160,6 +165,20 @@ class Wavefunction {
                 types[i][j] = this.states[i][j].getTileZero().getType();
 
         return types;
+    }
+
+    // Extract the integers
+    int[][] extractIntegers() {
+
+        // Allocate output
+        int[][] integers = new int[this.states.length][this.states[0].length];
+
+        // Snatch the ints
+        for (int i = 0; i < this.states.length; i++)
+            for (int j = 0; j < this.states[0].length; j++)
+                integers[i][j] = this.states[i][j].getTileZero().getType().getValue();
+
+        return integers;
     }
 
     // Save collapsed state to an image

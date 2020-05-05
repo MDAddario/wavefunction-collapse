@@ -5,6 +5,8 @@ class Type {
     // Only attribute
     int value;
 
+    int getValue() { return this.value; }
+
     Type(int type) {
         this.value = type;
     }
